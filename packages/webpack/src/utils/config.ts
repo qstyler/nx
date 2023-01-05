@@ -1,4 +1,4 @@
-import { join, parse } from 'path';
+import { join } from 'path';
 import * as webpack from 'webpack';
 import { Configuration, WebpackPluginInstance } from 'webpack';
 import { LicenseWebpackPlugin } from 'license-webpack-plugin';
@@ -7,6 +7,7 @@ import { getOutputHashFormat } from './hash-format';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import { ExecutorContext } from '@nrwl/devkit';
 import { loadTsTransformers } from '@nrwl/js';
+import { removeFilenameExtension } from '@nrwl/devkit/src/utils/filenameutils';
 
 import {
   AssetGlobPattern,
@@ -59,7 +60,7 @@ export function getBaseWebpackPartial(
 
   let mainEntry = 'main';
   if (options.outputFileName) {
-    mainEntry = parse(options.outputFileName).name;
+    mainEntry = removeFilenameExtension(options.outputFileName);
   }
   const additionalEntryPoints =
     options.additionalEntryPoints?.reduce(

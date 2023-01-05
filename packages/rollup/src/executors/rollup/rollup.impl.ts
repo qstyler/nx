@@ -3,7 +3,7 @@ import * as ts from 'typescript';
 import * as rollup from 'rollup';
 import * as peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import { getBabelInputPlugin } from '@rollup/plugin-babel';
-import { dirname, join, parse } from 'path';
+import { dirname, join } from 'path';
 import { from, Observable, of } from 'rxjs';
 import { catchError, concatMap, last, scan, tap } from 'rxjs/operators';
 import { eachValueFrom } from '@nrwl/devkit/src/utils/rxjs-for-await';
@@ -15,6 +15,7 @@ import {
   computeCompilerOptionsPaths,
   DependentBuildableProjectNode,
 } from '@nrwl/workspace/src/utilities/buildable-libs-utils';
+import { removeFilenameExtension } from '@nrwl/devkit/src/utils/filenameutils';
 import resolve from '@rollup/plugin-node-resolve';
 
 import { AssetGlobPattern, RollupExecutorOptions } from './schema';
@@ -272,7 +273,7 @@ export function createRollupOptions(
     const rollupConfig = {
       input: options.outputFileName
         ? {
-            [parse(options.outputFileName).name]: options.main,
+            [removeFilenameExtension(options.outputFileName)]: options.main,
           }
         : options.main,
       output: {
